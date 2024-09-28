@@ -10,13 +10,32 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const pool = new Pool({
+/* initial testing */
+/* app.get("/", (req, res) => {
+  res.send("Hello World!");
+}); */
+
+// to be used when the data base is local 
+/* const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-});
+}); */
+
+
+// to be used when the database is online
+   const connectionString = process.env.DB_URL;
+
+// Create a connection pool
+  const pool = new Pool({
+    connectionString: connectionString,
+    ssl: {
+      rejectUnauthorized: false
+  }
+}); 
+
   
 app.post('/submit-contact', async (req, res) => {
     const formData = req.body;
